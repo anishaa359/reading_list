@@ -94,7 +94,6 @@ export default function App() {
               ref={inputRef}
               type="text"
               value={title}
-              maxLength={MAX_TITLE_LENGTH}
               onChange={(e) => handleTitleChange(e.target.value)}
               placeholder="Enter a book title…"
               className={
