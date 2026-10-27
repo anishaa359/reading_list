@@ -4,6 +4,7 @@ import { fileURLToPath, URL } from 'node:url';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  root: fileURLToPath(new URL('.', import.meta.url)),
   plugins: [react()],
   resolve: {
     alias: {
