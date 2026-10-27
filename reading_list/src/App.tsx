@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Plus, Library, BookOpen, Trash2, Check } from 'lucide-react';
-import { useReadingList, MAX_TITLE_LENGTH, type AddResult } from '@/hooks/useReadingList';
+import { useReadingList, MAX_TITLE_LENGTH } from '@/hooks/useReadingList';
 import { STATUS_META, type ReadingStatus } from '@/types';
 
 type FilterValue = ReadingStatus | 'all';
@@ -69,16 +69,13 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
-      {/* Header */}
       <header className="border-b border-slate-200 bg-white">
         <div className="mx-auto flex max-w-3xl items-center gap-3 px-5 py-5">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white">
             <Library className="h-5 w-5" strokeWidth={2} />
           </div>
           <div>
-            <h1 className="text-lg font-semibold tracking-tight">
-              Reading List
-            </h1>
+            <h1 className="text-lg font-semibold tracking-tight">Reading List</h1>
             <p className="text-sm text-slate-500">
               Track the books you read, one page at a time.
             </p>
@@ -186,30 +183,28 @@ export default function App() {
                   key={book.id}
                   className="group relative flex flex-col rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md"
                 >
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex items-start gap-3">
-                      <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-500">
-                        <BookOpen className="h-4 w-4" strokeWidth={2} />
-                      </div>
-                      <div className="min-w-0">
-                        <h3 className="break-words text-sm font-semibold leading-snug text-slate-900">
-                          {book.title}
-                        </h3>
+                  <div className="flex items-start gap-3">
+                    <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-500">
+                      <BookOpen className="h-4 w-4" strokeWidth={2} />
+                    </div>
+                    <div className="min-w-0">
+                      <h3 className="break-words text-sm font-semibold leading-snug text-slate-900">
+                        {book.title}
+                      </h3>
+                      <span
+                        className={
+                          'mt-1.5 inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-xs font-medium ' +
+                          STATUS_META[book.status].badge
+                        }
+                      >
                         <span
                           className={
-                            'mt-1.5 inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-xs font-medium ' +
-                            STATUS_META[book.status].badge
+                            'h-1.5 w-1.5 rounded-full ' +
+                            STATUS_META[book.status].dot
                           }
-                        >
-                          <span
-                            className={
-                              'h-1.5 w-1.5 rounded-full ' +
-                              STATUS_META[book.status].dot
-                            }
-                          />
-                          {STATUS_META[book.status].label}
-                        </span>
-                      </div>
+                        />
+                        {STATUS_META[book.status].label}
+                      </span>
                     </div>
                   </div>
 
@@ -227,13 +222,14 @@ export default function App() {
                       >
                         Change status ▾
                       </button>
-                    {openMenuId === book.id && (
-                      <div
-                        className="absolute left-0 top-full z-10 mt-1 w-44 overflow-hidden rounded-xl border border-slate-200 bg-white py-1 shadow-lg"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        {(['want', 'reading', 'finished'] as ReadingStatus[]).map(
-                          (s) => (
+                      {openMenuId === book.id && (
+                        <div
+                          className="absolute left-0 top-full z-10 mt-1 w-44 overflow-hidden rounded-xl border border-slate-200 bg-white py-1 shadow-lg"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          {(
+                            ['want', 'reading', 'finished'] as ReadingStatus[]
+                          ).map((s) => (
                             <button
                               key={s}
                               onClick={() => {
@@ -251,13 +247,15 @@ export default function App() {
                                 {STATUS_META[s].label}
                               </span>
                               {book.status === s && (
-                                <Check className="h-4 w-4 text-slate-900" strokeWidth={2.25} />
+                                <Check
+                                  className="h-4 w-4 text-slate-900"
+                                  strokeWidth={2.25}
+                                />
                               )}
                             </button>
-                          )
-                        )}
-                      </div>
-                    )}
+                          ))}
+                        </div>
+                      )}
                     </div>
                     <button
                       onClick={() => removeBook(book.id)}
@@ -307,7 +305,9 @@ function EmptyState({
       </div>
       <p className="mt-4 text-sm font-medium text-slate-700">
         {hasBooks
-          ? `No books marked as “${FILTERS.find((f) => f.value === filter)?.label}”.`
+          ? `No books marked as “${
+              FILTERS.find((f) => f.value === filter)?.label
+            }”.`
           : 'Your reading list is empty. Add your first book.'}
       </p>
     </div>

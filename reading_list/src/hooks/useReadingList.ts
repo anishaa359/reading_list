@@ -9,8 +9,6 @@ export type AddResult =
   | { ok: true }
   | { ok: false; reason: 'duplicate' | 'too-long' };
 
-const STATUS_ORDER: ReadingStatus[] = ['reading', 'want', 'finished'];
-
 function loadBooks(): Book[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -18,7 +16,11 @@ function loadBooks(): Book[] {
     const parsed = JSON.parse(raw) as Book[];
     if (!Array.isArray(parsed)) return [];
     return parsed.filter(
-      (b) => b && b.id && b.title && ['want', 'reading', 'finished'].includes(b.status)
+      (b) =>
+        b &&
+        b.id &&
+        b.title &&
+        ['want', 'reading', 'finished'].includes(b.status)
     );
   } catch {
     return [];
@@ -39,9 +41,15 @@ export function useReadingList() {
   const addBook = useCallback(
     (title: string, status: ReadingStatus): AddResult => {
       const trimmed = title.trim().replace(/\s+/g, ' ');
-      if (trimmed.length > MAX_TITLE_LENGTH) return { ok: false, reason: 'too-long' };
+      if (trimmed.length > MAX_TITLE_LENGTH)
+        return { ok: false, reason: 'too-long' };
       const normalized = trimmed.toLowerCase();
-      if (books.some((b) => b.title.trim().replace(/\s+/g, ' ').toLowerCase() === normalized)) {
+      if (
+        books.some(
+          (b) =>
+            b.title.trim().replace(/\s+/g, ' ').toLowerCase() === normalized
+        )
+      ) {
         return { ok: false, reason: 'duplicate' };
       }
       setBooks((prev) => [
@@ -68,5 +76,5 @@ export function useReadingList() {
     setBooks((prev) => prev.filter((b) => b.id !== id));
   }, []);
 
-  return { books, addBook, updateStatus, removeBook, STATUS_ORDER };
+  return { books, addBook, updateStatus, removeBook };
 }

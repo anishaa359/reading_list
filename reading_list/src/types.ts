@@ -14,8 +14,7 @@ export const STATUS_META: Record<
   want: {
     label: 'Want to Read',
     dot: 'bg-amber-500',
-    badge:
-      'bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-200',
+    badge: 'bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-200',
   },
   reading: {
     label: 'Reading',
@@ -25,7 +24,6 @@ export const STATUS_META: Record<
   finished: {
     label: 'Finished',
     dot: 'bg-emerald-500',
-    badge:
-      'bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-200',
+    badge: 'bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-200',
   },
 };
